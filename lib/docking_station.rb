@@ -1,25 +1,37 @@
-#!/usr/bin/env ruby
-require "./lib/bike.rb"
+require "./lib/Bike"
 
 class DockingStation
-  attr_reader :docked_bikes
-  def initialize
-    @docked_bikes = Array.new
-  end
+	attr_reader :dock
+    #DEFAULT_CAPACITY = 20
 
-  def release_bike
-    if(!@docked_bikes.empty?)
-      Bike.new
-    else 
-      raise "No bikes available"
-    end
-  end
+	def initialize(constant = 20)
+		self.class.const_set(:DEFAULT_CAPACITY, constant)
+		@dock = []
+	end
 
-  def docking_bike(bike)
-    @bike = bike
-    @docked_bikes.push(@bike)
-#    return @bike
-  end
+	def release_bike
+		raise "The dock is empty" if empty?
+		Bike.new
+	end
+
+	def dock_bike
+		raise "The dock is full" if full?
+		@dock.push(Bike.new)
+	end
+
+	def check
+		"No bikes, sorry" if empty?
+		dock
+	end
+
+	private
+	
+	def full?
+		dock.count >= DEFAULT_CAPACITY ? true : false
+	end
+
+	def empty?
+		dock.empty? ? true : false
+	end
 
 end
-
